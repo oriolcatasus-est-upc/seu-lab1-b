@@ -3,6 +3,8 @@
 DigitalIn enable(p17);
 DigitalOut led(LED1);
 
+float pulseMinTime = 0.5;
+
 Timer t;
 int state = 0;
 // 0 -> PIN 17 disabled
@@ -18,7 +20,7 @@ int main()
                 t.start();
                 state = 1;
             }
-            if (state == 1 && t.read() > 0.5) {
+            if (state == 1 && t.read() > pulseMinTime) {
                 led = !led;
                 t.stop();
                 state = 2;
