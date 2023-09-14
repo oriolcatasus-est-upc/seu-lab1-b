@@ -1,32 +1,35 @@
+/*
+Authors:
+- Oriol
+- Pablo Arancibia Barahona
+*/
+
 #include "mbed.h"
  
 DigitalIn enable(p17);
 DigitalOut led(LED1);
 
-float pulseMinTime = 0.5;
-
-Timer t;
-int state = 0;
-// 0 -> PIN 17 disabled
-// 1 -> PIN 17 enabled for less than 0.5s
-// 2 -> PIN 17 enabled for more than 0.5s
-
 int main()
 {
+    const float PULSE_MIN_TIME = 500;
+
+    Timer pressTimer;
+    bool stateEnable = false;
+
     while (true) {
-        if (enable) {
-            if (state == 0) {
-                t.reset();
-                t.start();
-                state = 1;
-            }
-            if (state == 1 && t.read() > pulseMinTime) {
-                led = !led;
-                t.stop();
-                state = 2;
-            }
-        } else {
-            state = 0;
+        if (enable && !stateEnable){ // if enable is pressed and before was not pressed
+            pressTimer.start();
+            stateEnable = true;
+
+        } else if (enable && stateEnable && pressTimer.read_ms() > PULSE_MIN_TIME){ // if is pressed for 0.5 sec
+            pressTimer.stop();
+            pressTimer.reset();
+            led = !led;
+
+        } else if (enable && !stateEnable){ // if enable is not pressed and before was pressed
+            pressTimer.stop();
+            pressTimer.reset();
+            stateEnable = false;
         }
     }
 }
