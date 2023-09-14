@@ -11,7 +11,7 @@ DigitalOut led(LED1);
 
 int main()
 {
-    const float PULSE_MIN_TIME = 500;
+    const int PULSE_MIN_TIME = 500;
 
     Timer pressTimer;
     bool stateEnable = false;
