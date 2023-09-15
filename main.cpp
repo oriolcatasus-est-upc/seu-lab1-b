@@ -1,6 +1,6 @@
 /*
 Authors:
-- Oriol
+- Oriol Catasús Llena
 - Pablo Arancibia Barahona
 */
 
@@ -26,7 +26,7 @@ int main()
             pressTimer.reset();
             led = !led;
 
-        } else if (enable && !stateEnable){ // if enable is not pressed and before was pressed
+        } else if (!enable && stateEnable){ // if enable is not pressed and before was pressed
             pressTimer.stop();
             pressTimer.reset();
             stateEnable = false;
